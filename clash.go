@@ -4,15 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"log"
+	"net"
+	"sync"
+
 	"github.com/Dreamacro/clash/adapter/outbound"
 	"github.com/Dreamacro/clash/constant"
 	clashC "github.com/Dreamacro/clash/constant"
 	"github.com/Dreamacro/clash/listener/socks"
 	"github.com/pkg/errors"
-	"io"
-	"log"
-	"net"
-	"sync"
 )
 
 type ClashBasedInstance struct {
@@ -186,8 +187,8 @@ func NewShadowsocksRInstance(socksPort int, server string, port int, password st
 
 func NewSnellInstance(socksPort int, server string, port int, psk string, obfsMode string, obfsHost string, version int) (*ClashBasedInstance, error) {
 	obfs := map[string]interface{}{}
-	obfs["Mode"] = obfsMode
-	obfs["Host"] = obfsHost
+	obfs["mode"] = obfsMode
+	obfs["host"] = obfsHost
 	out, err := outbound.NewSnell(outbound.SnellOption{
 		Server:   server,
 		Port:     port,
